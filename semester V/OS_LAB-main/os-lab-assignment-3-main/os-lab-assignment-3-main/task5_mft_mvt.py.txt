@@ -1,0 +1,184 @@
+# Task 5: MFT & MVT Memory Management
+# Fixed Partition (MFT) and Variable Partition (MVT) Strategies
+
+def MFT_fixed_partition():
+    """MFT - Fixed Partition Memory Management"""
+    print("\n" + "="*50)
+    print("MFT (FIXED PARTITION) MEMORY MANAGEMENT")
+    print("="*50)
+    
+    # Get input from user
+    total_memory = int(input("Enter total memory size (KB): "))
+    partition_size = int(input("Enter fixed partition size (KB): "))
+    num_processes = int(input("Enter number of processes: "))
+    
+    # Calculate number of partitions
+    num_partitions = total_memory // partition_size
+    internal_fragmentation = 0
+    processes_allocated = 0
+    processes_rejected = 0
+    
+    print(f"\nTotal Memory: {total_memory} KB")
+    print(f"Partition Size: {partition_size} KB")
+    print(f"Number of Partitions: {num_partitions}")
+    print(f"Available Memory for processes: {num_partitions * partition_size} KB")
+    
+    print("\n" + "-" * 60)
+    print("PROCESS ALLOCATION RESULTS")
+    print("-" * 60)
+    print("Process#\tSize (KB)\tStatus\t\tInternal Fragmentation")
+    print("-" * 80)
+    
+    # Process each process
+    for i in range(1, num_processes + 1):
+        process_size = int(input(f"Enter size of Process {i} (KB): "))
+        
+        if process_size <= partition_size:
+            # Process can be allocated
+            frag = partition_size - process_size
+            internal_fragmentation += frag
+            processes_allocated += 1
+            status = "ALLOCATED"
+            print(f"Process {i}\t\t{process_size}\t\t{status}\t\t{frag} KB")
+        else:
+            # Process too large
+            processes_rejected += 1
+            status = "REJECTED (Too Large)"
+            print(f"Process {i}\t\t{process_size}\t\t{status}\t\t-")
+    
+    # Display summary
+    print("\n" + "="*50)
+    print("MFT ALLOCATION SUMMARY")
+    print("="*50)
+    print(f"Total Processes: {num_processes}")
+    print(f"Processes Allocated: {processes_allocated}")
+    print(f"Processes Rejected: {processes_rejected}")
+    print(f"Total Internal Fragmentation: {internal_fragmentation} KB")
+    print(f"Memory Utilization: {(num_partitions * partition_size - internal_fragmentation) / (num_partitions * partition_size) * 100:.2f}%")
+    
+    # Display memory map
+    print("\nMEMORY MAP:")
+    print("Partition#\tSize\t\tStatus")
+    print("-" * 40)
+    for i in range(num_partitions):
+        if i < processes_allocated:
+            status = f"Allocated to Process {i+1}"
+        else:
+            status = "Free"
+        print(f"Partition {i+1}\t{partition_size} KB\t{status}")
+
+def MVT_variable_partition():
+    """MVT - Variable Partition Memory Management"""
+    print("\n" + "="*50)
+    print("MVT (VARIABLE PARTITION) MEMORY MANAGEMENT")
+    print("="*50)
+    
+    # Get input from user
+    total_memory = int(input("Enter total memory size (KB): "))
+    num_processes = int(input("Enter number of processes: "))
+    
+    available_memory = total_memory
+    processes_allocated = 0
+    processes_rejected = 0
+    external_fragmentation = 0
+    allocation_table = []
+    
+    print(f"\nTotal Memory: {total_memory} KB")
+    print(f"Initial Available Memory: {available_memory} KB")
+    
+    print("\n" + "-" * 60)
+    print("PROCESS ALLOCATION RESULTS")
+    print("-" * 60)
+    print("Process#\tSize (KB)\tStatus\t\tMemory Left")
+    print("-" * 70)
+    
+    # Process each process
+    for i in range(1, num_processes + 1):
+        process_size = int(input(f"Enter size of Process {i} (KB): "))
+        
+        if process_size <= available_memory:
+            # Allocate the process
+            available_memory -= process_size
+            processes_allocated += 1
+            status = "ALLOCATED"
+            allocation_table.append((f"Process {i}", process_size, total_memory - available_memory - process_size, total_memory - available_memory - 1))
+            print(f"Process {i}\t\t{process_size}\t\t{status}\t\t{available_memory} KB")
+        else:
+            # Cannot allocate - not enough memory
+            processes_rejected += 1
+            status = "REJECTED (No Space)"
+            print(f"Process {i}\t\t{process_size}\t\t{status}\t\t{available_memory} KB")
+    
+    # Calculate external fragmentation
+    external_fragmentation = available_memory
+    
+    # Display summary
+    print("\n" + "="*50)
+    print("MVT ALLOCATION SUMMARY")
+    print("="*50)
+    print(f"Total Processes: {num_processes}")
+    print(f"Processes Allocated: {processes_allocated}")
+    print(f"Processes Rejected: {processes_rejected}")
+    print(f"External Fragmentation: {external_fragmentation} KB")
+    print(f"Memory Utilization: {(total_memory - available_memory) / total_memory * 100:.2f}%")
+    
+    # Display memory map
+    print("\nMEMORY MAP:")
+    if allocation_table:
+        print("Process\t\tSize (KB)\tStart Address\tEnd Address")
+        print("-" * 60)
+        current_address = 0
+        for process, size, start, end in allocation_table:
+            print(f"{process}\t{size}\t\t{start}\t\t{end}")
+            current_address = end + 1
+        
+        if external_fragmentation > 0:
+            print(f"Free Space\t{external_fragmentation}\t\t{current_address}\t\t{total_memory - 1}")
+    else:
+        print("No processes allocated. Entire memory is free.")
+
+def memory_management_simulation():
+    """Main function for MFT and MVT simulation"""
+    print("=== MEMORY MANAGEMENT TECHNIQUES SIMULATION ===")
+    
+    while True:
+        print("\n" + "="*40)
+        print("MEMORY MANAGEMENT TECHNIQUES")
+        print("="*40)
+        print("1. MFT (Fixed Partitioning)")
+        print("2. MVT (Variable Partitioning)")
+        print("3. Compare MFT vs MVT")
+        print("4. Exit")
+        
+        choice = input("\nEnter your choice (1-4): ")
+        
+        if choice == '1':
+            MFT_fixed_partition()
+        elif choice == '2':
+            MVT_variable_partition()
+        elif choice == '3':
+            print("\n" + "="*60)
+            print("COMPARISON: MFT vs MVT")
+            print("="*60)
+            print("MFT (Fixed Partitioning):")
+            print("  - Fixed size partitions")
+            print("  - Internal fragmentation occurs")
+            print("  - Simple to implement")
+            print("  - Wastes memory due to fixed sizes")
+            print("\nMVT (Variable Partitioning):")
+            print("  - Dynamic partition sizes") 
+            print("  - External fragmentation occurs")
+            print("  - Better memory utilization")
+            print("  - Requires compaction")
+            print("\nKey Difference:")
+            print("  - MFT: Internal Fragmentation")
+            print("  - MVT: External Fragmentation")
+        elif choice == '4':
+            print("Exiting Memory Management Simulation. Goodbye!")
+            break
+        else:
+            print("Invalid choice! Please enter 1-4.")
+
+# Run the simulation
+if __name__ == "__main__":
+    memory_management_simulation()

@@ -1,0 +1,12 @@
+#!/bin/bash
+echo "=== System Information ==="
+echo "Kernel Version:"
+uname -r
+echo "User:"
+whoami
+echo "=== Hardware Information ==="
+systeminfo | grep "System"
+echo "=== Virtualization Check ==="
+systeminfo | findstr "Virtual"
+echo "=== Memory Information ==="
+systeminfo | findstr "Total Physical Memory"

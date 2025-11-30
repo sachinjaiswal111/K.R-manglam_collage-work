@@ -1,0 +1,14 @@
+OS LAB ASSIGNMENT 1 REPORT
+============================
+Student: Bhumitanwar
+Date: Monday 29 September 2025 11:53:46 PM IST
+
+All 5 tasks completed successfully:
+- Task 1: Process creation with fork()
+- Task 2: Command execution using subprocess
+- Task 3: Zombie and orphan process simulation
+- Task 4: /proc filesystem inspection
+- Task 5: Process prioritization demonstration
+
+See output.txt for detailed results.
+

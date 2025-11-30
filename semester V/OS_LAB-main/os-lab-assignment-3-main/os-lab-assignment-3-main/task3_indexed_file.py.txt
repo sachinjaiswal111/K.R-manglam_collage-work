@@ -1,0 +1,103 @@
+# Task 3: Indexed File Allocation Simulation
+
+def indexed_file_allocation():
+    print("\n" + "="*50)
+    print("INDEXED FILE ALLOCATION SIMULATION")
+    print("="*50)
+    
+    # Initialize disk blocks
+    total_blocks = int(input("Enter total number of blocks in disk: "))
+    block_status = [0] * total_blocks  # 0 = free, 1 = allocated
+    index_blocks = {}  # Store index block information
+    
+    n = int(input("Enter number of files to allocate: "))
+    
+    print(f"\nDisk has blocks from 0 to {total_blocks-1}")
+    
+    for file_num in range(1, n + 1):
+        print(f"\n--- File {file_num} Allocation ---")
+        
+        # Get index block
+        index_block = int(input("Enter index block number: "))
+        
+        # Validate index block
+        if index_block < 0 or index_block >= total_blocks:
+            print(f"❌ ERROR: Index block {index_block} is out of range!")
+            continue
+            
+        if block_status[index_block] == 1:
+            print(f"❌ ERROR: Index block {index_block} is already allocated!")
+            continue
+        
+        # Get data blocks
+        num_blocks = int(input("Enter number of data blocks needed: "))
+        print(f"Enter {num_blocks} data block numbers (separated by spaces): ")
+        data_blocks = list(map(int, input().split()))
+        
+        # Validate data blocks input
+        if len(data_blocks) != num_blocks:
+            print(f"❌ ERROR: Expected {num_blocks} blocks but got {len(data_blocks)}!")
+            continue
+        
+        # Check if all data blocks are valid and free
+        allocation_possible = True
+        for block in data_blocks:
+            if block < 0 or block >= total_blocks:
+                print(f"❌ ERROR: Data block {block} is out of range!")
+                allocation_possible = False
+                break
+            if block_status[block] == 1:
+                print(f"❌ ERROR: Data block {block} is already allocated!")
+                allocation_possible = False
+                break
+        
+        if allocation_possible:
+            # Allocate index block and data blocks
+            block_status[index_block] = 1
+            for block in data_blocks:
+                block_status[block] = 1
+            
+            # Store index block information
+            index_blocks[index_block] = data_blocks
+            
+            print(f"✅ SUCCESS: File {file_num} allocated!")
+            print(f"   Index Block: {index_block}")
+            print(f"   Data Blocks: {data_blocks}")
+            print(f"   Index block {index_block} points to: {data_blocks}")
+        else:
+            print(f"❌ FAILED: File {file_num} could not be allocated")
+    
+    # Display final allocation table
+    print("\n" + "="*50)
+    print("FINAL ALLOCATION TABLE")
+    print("="*50)
+    
+    print("\nIndex Block Allocation:")
+    print("File\tIndex Block\tData Blocks")
+    print("-" * 45)
+    
+    file_counter = 1
+    for index_block, data_blocks in index_blocks.items():
+        print(f"{file_counter}\t{index_block}\t\t{data_blocks}")
+        file_counter += 1
+    
+    # Display disk block status
+    print("\nDisk Block Status:")
+    print("Block#\tStatus\t\tPurpose")
+    print("-" * 35)
+    
+    for i in range(total_blocks):
+        if i in index_blocks:
+            status = "Allocated"
+            purpose = f"Index Block (points to {index_blocks[i]})"
+        elif block_status[i] == 1:
+            status = "Allocated"
+            purpose = "Data Block"
+        else:
+            status = "Free"
+            purpose = "-"
+        print(f"{i}\t{status}\t{purpose}")
+
+# Run the simulation
+if __name__ == "__main__":
+    indexed_file_allocation()

@@ -1,0 +1,35 @@
+OS Lab Assignment 1 - Process Management
+Running all tasks automatically...
+=== Task 1: Process Creation Utility ===
+Creating 2 child processes...
+All children have finished!
+
+=== Task 2: Command Execution Using exec() ===
+All command executions completed!
+
+=== Task 3: Zombie & Orphan Processes ===
+Creating a ZOMBIE process...
+Parent: Created child 1883, but NOT waiting (zombie scenario)
+Run 'ps -ef | grep defunct' in another terminal to see zombie
+Zombie cleaned up!
+
+Creating an ORPHAN process...
+Orphan Process: Child continues after parent exits
+Parent PID becomes 1 (init process)
+This is demonstrated conceptually to avoid program termination
+
+=== Task 4: Inspecting Process Info from /proc ===
+Inspecting current process (PID: 1872)
+=== Process Status ===
+Name:	python3
+State:	R (running)
+Pid:	1872
+PPid:	1424
+TracerPid:	0
+Executable path: /usr/bin/python3.13
+Task 4 completed!
+
+=== Task 5: Process Prioritization ===
+All prioritized tasks completed!
+
+=== ALL TASKS COMPLETED ===

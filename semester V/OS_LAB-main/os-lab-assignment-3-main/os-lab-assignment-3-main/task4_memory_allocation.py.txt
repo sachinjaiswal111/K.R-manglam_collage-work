@@ -1,0 +1,157 @@
+# Task 4: Contiguous Memory Allocation
+# Worst-fit, Best-fit, and First-fit Memory Allocation Strategies
+
+def display_memory_layout(partitions, processes, allocation):
+    """Display the current memory layout"""
+    print("\nMemory Layout:")
+    print("Partition#\tSize\t\tStatus")
+    print("-" * 40)
+    
+    for i, size in enumerate(partitions):
+        status = "Free"
+        for j, alloc in enumerate(allocation):
+            if alloc == i:
+                status = f"Allocated to Process {j+1} (Size: {processes[j]})"
+                break
+        print(f"Partition {i+1}\t{size}\t\t{status}")
+
+def first_fit(partitions, processes):
+    """First Fit Memory Allocation Strategy"""
+    print("\n" + "="*50)
+    print("FIRST FIT MEMORY ALLOCATION")
+    print("="*50)
+    
+    # Create copies to avoid modifying original arrays
+    parts = partitions.copy()
+    procs = processes.copy()
+    allocation = [-1] * len(procs)  # -1 means not allocated
+    
+    print(f"Partitions: {parts}")
+    print(f"Processes: {procs}")
+    
+    for i in range(len(procs)):
+        allocated = False
+        for j in range(len(parts)):
+            if parts[j] >= procs[i]:
+                # Allocate process to this partition
+                parts[j] -= procs[i]
+                allocation[i] = j
+                allocated = True
+                print(f"✓ Process {i+1} (Size: {procs[i]}) allocated to Partition {j+1}")
+                break
+        
+        if not allocated:
+            print(f"✗ Process {i+1} (Size: {procs[i]}) cannot be allocated")
+    
+    display_memory_layout(partitions, processes, allocation)
+    return allocation
+
+def best_fit(partitions, processes):
+    """Best Fit Memory Allocation Strategy"""
+    print("\n" + "="*50)
+    print("BEST FIT MEMORY ALLOCATION")
+    print("="*50)
+    
+    parts = partitions.copy()
+    procs = processes.copy()
+    allocation = [-1] * len(procs)
+    
+    print(f"Partitions: {parts}")
+    print(f"Processes: {procs}")
+    
+    for i in range(len(procs)):
+        best_idx = -1
+        for j in range(len(parts)):
+            if parts[j] >= procs[i]:
+                if best_idx == -1 or parts[j] < parts[best_idx]:
+                    best_idx = j
+        
+        if best_idx != -1:
+            parts[best_idx] -= procs[i]
+            allocation[i] = best_idx
+            print(f"✓ Process {i+1} (Size: {procs[i]}) allocated to Partition {best_idx+1}")
+        else:
+            print(f"✗ Process {i+1} (Size: {procs[i]}) cannot be allocated")
+    
+    display_memory_layout(partitions, processes, allocation)
+    return allocation
+
+def worst_fit(partitions, processes):
+    """Worst Fit Memory Allocation Strategy"""
+    print("\n" + "="*50)
+    print("WORST FIT MEMORY ALLOCATION")
+    print("="*50)
+    
+    parts = partitions.copy()
+    procs = processes.copy()
+    allocation = [-1] * len(procs)
+    
+    print(f"Partitions: {parts}")
+    print(f"Processes: {procs}")
+    
+    for i in range(len(procs)):
+        worst_idx = -1
+        for j in range(len(parts)):
+            if parts[j] >= procs[i]:
+                if worst_idx == -1 or parts[j] > parts[worst_idx]:
+                    worst_idx = j
+        
+        if worst_idx != -1:
+            parts[worst_idx] -= procs[i]
+            allocation[i] = worst_idx
+            print(f"✓ Process {i+1} (Size: {procs[i]}) allocated to Partition {worst_idx+1}")
+        else:
+            print(f"✗ Process {i+1} (Size: {procs[i]}) cannot be allocated")
+    
+    display_memory_layout(partitions, processes, allocation)
+    return allocation
+
+def memory_allocation_simulation():
+    """Main function to simulate all memory allocation strategies"""
+    print("=== CONTIGUOUS MEMORY ALLOCATION SIMULATION ===")
+    
+    # Input partitions
+    print("\nEnter partition sizes (separated by spaces):")
+    partitions = list(map(int, input().split()))
+    
+    # Input processes
+    print("Enter process sizes (separated by spaces):")
+    processes = list(map(int, input().split()))
+    
+    print(f"\nInitial Memory Partitions: {partitions}")
+    print(f"Processes to allocate: {processes}")
+    
+    while True:
+        print("\n" + "="*40)
+        print("MEMORY ALLOCATION STRATEGIES")
+        print("="*40)
+        print("1. First Fit Allocation")
+        print("2. Best Fit Allocation") 
+        print("3. Worst Fit Allocation")
+        print("4. Compare All Strategies")
+        print("5. Exit")
+        
+        choice = input("\nEnter your choice (1-5): ")
+        
+        if choice == '1':
+            first_fit(partitions.copy(), processes)
+        elif choice == '2':
+            best_fit(partitions.copy(), processes)
+        elif choice == '3':
+            worst_fit(partitions.copy(), processes)
+        elif choice == '4':
+            print("\n" + "="*60)
+            print("COMPARISON OF ALL MEMORY ALLOCATION STRATEGIES")
+            print("="*60)
+            first_fit(partitions.copy(), processes)
+            best_fit(partitions.copy(), processes)
+            worst_fit(partitions.copy(), processes)
+        elif choice == '5':
+            print("Exiting Memory Allocation Simulation. Goodbye!")
+            break
+        else:
+            print("Invalid choice! Please enter 1-5.")
+
+# Run the simulation
+if __name__ == "__main__":
+    memory_allocation_simulation()

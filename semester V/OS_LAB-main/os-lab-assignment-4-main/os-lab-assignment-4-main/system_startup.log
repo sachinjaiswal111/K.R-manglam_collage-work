@@ -1,0 +1,33 @@
+2025-11-26 12:21:02,505 - SystemStartup - INFO - SYSTEM STARTUP SEQUENCE INITIATED
+2025-11-26 12:21:02,616 - SystemStartup - INFO - Starting process scheduling...
+2025-11-26 12:21:02,616 - SystemStartup - INFO - Process 1: Kernel Initialization - STARTED
+2025-11-26 12:21:05,538 - SystemStartup - INFO - Process 1: Kernel Initialization - COMPLETED (Duration: 2.91s)
+2025-11-26 12:21:05,651 - SystemStartup - INFO - Process 2: Memory Management - STARTED
+2025-11-26 12:21:08,273 - SystemStartup - INFO - Process 2: Memory Management - COMPLETED (Duration: 2.51s)
+2025-11-26 12:21:08,320 - SystemStartup - INFO - Process 3: Interrupt Handler Setup - STARTED
+2025-11-26 12:21:10,270 - SystemStartup - INFO - Process 3: Interrupt Handler Setup - COMPLETED (Duration: 1.94s)
+2025-11-26 12:21:10,275 - SystemStartup - INFO - Process 4: CPU Detection - STARTED
+2025-11-26 12:21:12,955 - SystemStartup - INFO - Process 4: CPU Detection - COMPLETED (Duration: 2.67s)
+2025-11-26 12:21:12,970 - SystemStartup - INFO - Process 5: Memory Detection - STARTED
+2025-11-26 12:21:15,480 - SystemStartup - INFO - Process 5: Memory Detection - COMPLETED (Duration: 2.49s)
+2025-11-26 12:21:15,487 - SystemStartup - INFO - Process 6: Device Enumeration - STARTED
+2025-11-26 12:21:17,536 - SystemStartup - INFO - Process 6: Device Enumeration - COMPLETED (Duration: 2.04s)
+2025-11-26 12:21:17,560 - SystemStartup - INFO - Process 7: Storage Driver - STARTED
+2025-11-26 12:21:18,924 - SystemStartup - INFO - Process 7: Storage Driver - COMPLETED (Duration: 1.35s)
+2025-11-26 12:21:18,924 - SystemStartup - INFO - Process 8: Network Driver - STARTED
+2025-11-26 12:21:20,257 - SystemStartup - INFO - Process 8: Network Driver - COMPLETED (Duration: 1.31s)
+2025-11-26 12:21:20,267 - SystemStartup - INFO - Process 9: Display Driver - STARTED
+2025-11-26 12:21:21,422 - SystemStartup - INFO - Process 9: Display Driver - COMPLETED (Duration: 1.15s)
+2025-11-26 12:21:21,429 - SystemStartup - INFO - Process 10: File System Mount - STARTED
+2025-11-26 12:21:22,689 - SystemStartup - INFO - Process 10: File System Mount - COMPLETED (Duration: 1.25s)
+2025-11-26 12:21:22,716 - SystemStartup - INFO - Process 11: Network Stack - STARTED
+2025-11-26 12:21:24,101 - SystemStartup - INFO - Process 11: Network Stack - COMPLETED (Duration: 1.37s)
+2025-11-26 12:21:24,115 - SystemStartup - INFO - Process 12: Init Process - STARTED
+2025-11-26 12:21:25,659 - SystemStartup - INFO - Process 12: Init Process - COMPLETED (Duration: 1.53s)
+2025-11-26 12:21:25,710 - SystemStartup - INFO - Process 13: Service Manager - STARTED
+2025-11-26 12:21:27,149 - SystemStartup - INFO - Process 13: Service Manager - COMPLETED (Duration: 1.43s)
+2025-11-26 12:21:27,190 - SystemStartup - INFO - Process 14: Login Service - STARTED
+2025-11-26 12:21:28,788 - SystemStartup - INFO - Process 14: Login Service - COMPLETED (Duration: 1.58s)
+2025-11-26 12:21:28,833 - SystemStartup - INFO - Process 15: GUI Interface - STARTED
+2025-11-26 12:21:29,967 - SystemStartup - INFO - Process 15: GUI Interface - COMPLETED (Duration: 1.12s)
+2025-11-26 12:21:30,254 - SystemStartup - INFO - System startup completed in 27.37 seconds

@@ -1,0 +1,51 @@
+OS LAB ASSIGNMENT 2 REPORT
+============================
+Student: Bhumitanwar
+Date: Tuesday 30 September 2025 12:45:23 AM IST
+
+IMPLEMENTATION SUMMARY:
+======================
+
+1. SYSTEM STARTUP SIMULATION:
+   - Simulated boot sequence with kernel initialization
+   - Filesystem mounting and service startup
+   - Sequential startup messages
+
+2. PROCESS CREATION:
+   - Used multiprocessing module for concurrent execution
+   - Created 3 different processes with unique tasks:
+     * Process-1: CPU-intensive calculations
+     * Process-2: I/O operations simulation  
+     * Process-3: System service simulation
+
+3. LOGGING SYSTEM:
+   - Implemented using Python logging module
+   - Timestamped entries with process names
+   - Logs stored in 'process_log.txt'
+   - Tracks process lifecycle (start → execution → end)
+
+4. PROCESS TERMINATION:
+   - Proper joining of all processes
+   - System shutdown sequence simulation
+   - Clean termination with status messages
+
+CODE STRUCTURE:
+===============
+- system_startup(): Simulates boot sequence
+- system_process(): Individual process task
+- system_shutdown(): Simulates shutdown
+- main(): Orchestrates entire simulation
+
+OUTPUT VERIFICATION:
+====================
+- Terminal displays real-time system messages
+- Log file contains detailed timestamped records
+- All processes start and end properly
+- System startup and shutdown sequences complete
+
+CONCLUSION:
+===========
+Successfully simulated OS system behavior including startup, 
+process management, and shutdown using Python multiprocessing 
+and logging modules.
+

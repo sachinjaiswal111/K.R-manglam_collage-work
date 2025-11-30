@@ -1,0 +1,169 @@
+# Task 1: CPU Scheduling with Gantt Chart
+# Priority Scheduling and Round Robin Simulation
+
+def priority_scheduling():
+    print("\n" + "="*50)
+    print("PRIORITY SCHEDULING SIMULATION")
+    print("="*50)
+    
+    processes = []
+    n = int(input("Enter number of processes: "))
+    
+    # Input process details
+    for i in range(n):
+        print(f"\nProcess P{i+1}:")
+        bt = int(input("Enter Burst Time: "))
+        pr = int(input("Enter Priority (lower number = higher priority): "))
+        processes.append((i+1, bt, pr))
+    
+    # Sort processes by priority (lower number = higher priority)
+    processes.sort(key=lambda x: x[2])
+    
+    wt = 0
+    total_wt = 0
+    total_tt = 0
+    current_time = 0
+    gantt_chart = []
+    
+    print("\n=== Priority Scheduling Results ===")
+    print("PID\tBurst Time\tPriority\tWaiting Time\tTurnaround Time")
+    print("-" * 70)
+    
+    for pid, bt, pr in processes:
+        waiting_time = current_time
+        turnaround_time = current_time + bt
+        
+        print(f"P{pid}\t{bt}\t\t{pr}\t\t{waiting_time}\t\t{turnaround_time}")
+        
+        total_wt += waiting_time
+        total_tt += turnaround_time
+        current_time += bt
+        
+        # Build Gantt chart entry
+        gantt_chart.append(f"P{pid}[{waiting_time}-{turnaround_time}]")
+    
+    # Display results
+    print("\n=== Gantt Chart ===")
+    print(" -> ".join(gantt_chart))
+    
+    print(f"\n=== Performance Metrics ===")
+    print(f"Average Waiting Time: {total_wt / n:.2f}")
+    print(f"Average Turnaround Time: {total_tt / n:.2f}")
+
+def round_robin_scheduling():
+    print("\n" + "="*50)
+    print("ROUND ROBIN SCHEDULING SIMULATION")
+    print("="*50)
+    
+    n = int(input("Enter number of processes: "))
+    processes = []
+    
+    # Input process details
+    for i in range(n):
+        print(f"\nProcess P{i+1}:")
+        bt = int(input("Enter Burst Time: "))
+        processes.append([i+1, bt, bt, 0])  # [pid, burst_time, remaining_time, waiting_time]
+    
+    time_quantum = int(input("\nEnter time quantum: "))
+    
+    current_time = 0
+    completed = 0
+    gantt_chart = []
+    queue = []
+    visited = [0] * n
+    
+    # Initialize queue with first process
+    queue.append(0)
+    visited[0] = 1
+    
+    print("\n=== Round Robin Scheduling Results ===")
+    
+    while completed < n:
+        if not queue:
+            # Find next unvisited process
+            for i in range(n):
+                if visited[i] == 0 and processes[i][2] > 0:
+                    queue.append(i)
+                    visited[i] = 1
+                    break
+            if not queue:
+                break
+        
+        i = queue.pop(0)
+        pid, bt, rem, wt = processes[i]
+        
+        if rem > time_quantum:
+            # Process executes for time quantum
+            gantt_chart.append(f"P{pid}[{current_time}-{current_time + time_quantum}]")
+            current_time += time_quantum
+            processes[i][2] -= time_quantum
+            
+            # Update waiting times for other processes
+            for j in range(n):
+                if j != i and processes[j][2] > 0 and visited[j] == 1:
+                    processes[j][3] += time_quantum
+        else:
+            # Process completes execution
+            gantt_chart.append(f"P{pid}[{current_time}-{current_time + rem}]")
+            current_time += rem
+            processes[i][2] = 0
+            completed += 1
+            
+            # Update waiting times for other processes
+            for j in range(n):
+                if j != i and processes[j][2] > 0 and visited[j] == 1:
+                    processes[j][3] += rem
+        
+        # Add new processes to queue
+        for j in range(n):
+            if visited[j] == 0 and processes[j][2] > 0:
+                queue.append(j)
+                visited[j] = 1
+        
+        # Re-add current process to queue if not completed
+        if processes[i][2] > 0:
+            queue.append(i)
+    
+    # Calculate and display results
+    total_wt = 0
+    total_tt = 0
+    
+    print("PID\tBurst Time\tWaiting Time\tTurnaround Time")
+    print("-" * 55)
+    
+    for i in range(n):
+        pid, bt, rem, wt = processes[i]
+        tat = wt + bt
+        total_wt += wt
+        total_tt += tat
+        print(f"P{pid}\t{bt}\t\t{wt}\t\t{tat}")
+    
+    # Display results
+    print("\n=== Gantt Chart ===")
+    print(" -> ".join(gantt_chart))
+    
+    print(f"\n=== Performance Metrics ===")
+    print(f"Average Waiting Time: {total_wt / n:.2f}")
+    print(f"Average Turnaround Time: {total_tt / n:.2f}")
+
+# Main execution
+if __name__ == "__main__":
+    print("=== CPU SCHEDULING ALGORITHMS SIMULATION ===")
+    
+    while True:
+        print("\nChoose scheduling algorithm:")
+        print("1. Priority Scheduling")
+        print("2. Round Robin Scheduling")
+        print("3. Exit")
+        
+        choice = input("Enter your choice (1-3): ")
+        
+        if choice == '1':
+            priority_scheduling()
+        elif choice == '2':
+            round_robin_scheduling()
+        elif choice == '3':
+            print("Exiting program. Goodbye!")
+            break
+        else:
+            print("Invalid choice! Please enter 1, 2, or 3.")

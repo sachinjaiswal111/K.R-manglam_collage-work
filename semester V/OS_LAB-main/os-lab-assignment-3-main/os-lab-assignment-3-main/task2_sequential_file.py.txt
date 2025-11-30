@@ -1,0 +1,73 @@
+# Task 2: Sequential File Allocation Simulation
+
+def sequential_file_allocation():
+    print("\n" + "="*50)
+    print("SEQUENTIAL FILE ALLOCATION SIMULATION")
+    print("="*50)
+    
+    # Initialize disk blocks
+    total_blocks = int(input("Enter total number of blocks in disk: "))
+    block_status = [0] * total_blocks  # 0 = free, 1 = allocated
+    
+    n = int(input("Enter number of files to allocate: "))
+    
+    print(f"\nDisk has blocks from 0 to {total_blocks-1}")
+    print("0 = Free block, 1 = Allocated block")
+    
+    for file_num in range(1, n + 1):
+        print(f"\n--- File {file_num} Allocation ---")
+        start_block = int(input("Enter starting block number: "))
+        file_length = int(input("Enter length of file (number of blocks needed): "))
+        
+        # Check if allocation is possible
+        if start_block < 0 or start_block >= total_blocks:
+            print(f"❌ ERROR: Starting block {start_block} is out of range!")
+            continue
+        
+        # Check if all required blocks are free and contiguous
+        allocation_possible = True
+        for block in range(start_block, start_block + file_length):
+            if block >= total_blocks:
+                print(f"❌ ERROR: File requires block {block} but disk only has {total_blocks} blocks!")
+                allocation_possible = False
+                break
+            if block_status[block] == 1:
+                print(f"❌ ERROR: Block {block} is already allocated!")
+                allocation_possible = False
+                break
+        
+        if allocation_possible:
+            # Allocate the blocks
+            for block in range(start_block, start_block + file_length):
+                block_status[block] = 1
+            
+            print(f"✅ SUCCESS: File {file_num} allocated blocks {start_block} to {start_block + file_length - 1}")
+        else:
+            print(f"❌ FAILED: File {file_num} could not be allocated")
+    
+    # Display final disk status
+    print("\n" + "="*40)
+    print("FINAL DISK BLOCK STATUS")
+    print("="*40)
+    
+    # Display in a formatted way
+    print("\nBlock Status Table:")
+    print("Block#\tStatus")
+    print("-" * 20)
+    
+    for i in range(total_blocks):
+        status = "Allocated" if block_status[i] == 1 else "Free"
+        print(f"{i}\t{status}")
+    
+    # Visual representation
+    print("\nVisual Block Map:")
+    for i in range(0, total_blocks, 20):
+        row_blocks = block_status[i:i+20]
+        row_display = ""
+        for block in row_blocks:
+            row_display += "█" if block == 1 else "░"  # █ = allocated, ░ = free
+        print(f"Blocks {i:03d}-{i+19:03d}: {row_display}")
+
+# Run the simulation
+if __name__ == "__main__":
+    sequential_file_allocation()
